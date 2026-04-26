@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CD — Creative Direction</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,700;1,900&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────── */
+:root {
+  --k:    #0d0d0d;
+  --w:    #f2efe8;
+  --y:    #d4e832;   /* hot yellow-green */
+  --r:    #e8281e;   /* catalog red */
+  --b:    #1a1aff;   /* bold blue */
+  --text: #f2efe8;
+  --dim:  rgba(242,239,232,0.45);
+  --pad:  clamp(14px,4vw,48px);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--k); color:var(--text);
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:400; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── GRAIN OVERLAY ──────────────────────────────── */
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:998;
+  opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+  background-size:400px; mix-blend-mode:overlay;
+}
+
+/* ── CURSOR ─────────────────────────────────────── */
+#cur{
+  position:fixed; width:12px; height:12px;
+  background:var(--y); border-radius:50%;
+  pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .12s,height .12s,background .12s,border-radius .12s;
+  display:none; mix-blend-mode:difference;
+}
+@media(hover:hover){#cur{display:block;}body{cursor:none;}}
+#cur.sq{width:22px;height:22px;border-radius:2px;background:var(--w);}
+
+/* ── NAV ────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px var(--pad);
+  background:var(--k);
+  border-bottom:2px solid var(--y);
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;letter-spacing:.12em;
+  color:var(--w);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--y);
+  animation:blink 2.2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);text-decoration:none;transition:color .15s;
+  font-weight:600;
+}
+.nav-links a:hover{color:var(--y);}
+.ham{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:2px;}
+.ham span{display:block;width:22px;height:2px;background:var(--w);transition:all .2s;}
+.ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.ham.open span:nth-child(2){opacity:0;}
+.ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+@media(max-width:600px){.nav-links{display:none;}.ham{display:flex;}}
+.mob-nav{
+  display:none;position:fixed;inset:0;top:57px;
+  background:var(--k);z-index:199;
+  flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  border-top:2px solid var(--y);
+}
+.mob-nav.open{display:flex;}
+.mob-nav a{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:52px;letter-spacing:.08em;
+  color:var(--w);text-decoration:none;transition:color .15s;
+}
+.mob-nav a:hover{color:var(--y);}
+
+/* ── HERO ───────────────────────────────────────── */
+.hero{
+  min-height:100svh;
+  display:grid;grid-template-rows:1fr auto;
+  padding:80px var(--pad) 0;
+  border-bottom:2px solid rgba(242,239,232,.12);
+  overflow:hidden;position:relative;
+}
+/* big BG number */
+.hero-bg{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-52%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(180px,36vw,520px);
+  line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(212,232,50,.07);
+  pointer-events:none;white-space:nowrap;letter-spacing:-.04em;
+  user-select:none;
+}
+.hero-content{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;
+  gap:clamp(16px,3vw,40px);
+  position:relative;z-index:1;
+  padding-bottom:40px;
+}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(68px,14vw,200px);
+  line-height:.88;letter-spacing:-.01em;
+  color:var(--w);
+  opacity:0;animation:fadeUp .6s .1s forwards;
+}
+.hero-title .hl{color:var(--y);}
+.hero-right{
+  text-align:right;
+  opacity:0;animation:fadeUp .6s .3s forwards;
+}
+.hero-right p{
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);line-height:2.2;margin-bottom:20px;
+  font-weight:600;
+}
+.hero-cta{
+  display:inline-flex;gap:0;
+  opacity:0;animation:fadeUp .6s .5s forwards;
+}
+.btn-y{
+  background:var(--y);color:var(--k);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:15px;letter-spacing:.12em;
+  padding:12px 24px;text-decoration:none;
+  transition:background .15s;border:none;cursor:pointer;display:inline-block;
+}
+.btn-y:hover{background:#c8dc20;}
+.btn-o{
+  background:transparent;color:var(--w);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:15px;letter-spacing:.12em;
+  padding:12px 24px;text-decoration:none;
+  border:2px solid rgba(242,239,232,.2);display:inline-block;
+  transition:border-color .15s;
+}
+.btn-o:hover{border-color:var(--w);}
+
+/* scrolling ticker at bottom of hero */
+.hero-ticker{
+  border-top:2px solid rgba(242,239,232,.1);
+  overflow:hidden;white-space:nowrap;
+  padding:10px 0;
+  background:rgba(242,239,232,.03);
+  position:relative;z-index:1;
+}
+.ticker-track{
+  display:inline-block;
+  animation:ticker 22s linear infinite;
+}
+.ticker-track span{
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);margin:0 28px;font-weight:700;
+}
+.ticker-track .t-sep{color:var(--y);margin:0 6px;font-size:14px;}
+@keyframes ticker{to{transform:translateX(-50%);}}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@media(max-width:640px){
+  .hero-content{grid-template-columns:1fr;}
+  .hero-right{text-align:left;}
+}
+
+/* ── SECTION WRAPPER ────────────────────────────── */
+.sec-hd{
+  display:grid;grid-template-columns:auto 1fr auto;
+  align-items:center;gap:16px;
+  padding:14px var(--pad);
+  border-bottom:2px solid rgba(242,239,232,.1);
+  background:rgba(242,239,232,.02);
+}
+.sh-num{font-size:11px;letter-spacing:.18em;color:var(--y);font-weight:700;}
+.sh-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(20px,3.5vw,32px);
+  letter-spacing:.1em;color:var(--w);
+}
+.sh-right{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+
+/* ── FEATURED ROWS ──────────────────────────────── */
+#featured{}
+
+.proj-row{
+  display:grid;
+  grid-template-columns:56px 1fr auto;
+  align-items:center;gap:0;
+  border-bottom:1px solid rgba(242,239,232,.08);
+  cursor:pointer;
+  transition:background .18s;
+  min-height:90px;
+}
+.proj-row:hover{background:rgba(242,239,232,.04);}
+.proj-row:hover .pr-arrow{transform:translateX(6px);color:var(--y);}
+.proj-row:hover .pr-name{color:var(--y);}
+
+.pr-num{
+  font-size:10px;letter-spacing:.14em;color:var(--dim);
+  padding:0 var(--pad);font-weight:700;
+  border-right:1px solid rgba(242,239,232,.08);
+  height:100%;display:flex;align-items:center;
+  min-width:56px;
+}
+.pr-main{
+  padding:20px clamp(14px,3vw,32px);
+  display:flex;flex-direction:column;gap:6px;
+}
+.pr-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(28px,5vw,64px);
+  letter-spacing:.04em;line-height:.95;
+  color:var(--w);transition:color .18s;
+}
+.pr-sub{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);font-weight:600;
+}
+.pr-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.ptag{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(242,239,232,.15);
+  padding:3px 8px;color:var(--dim);font-weight:700;
+  transition:border-color .15s,color .15s;
+}
+.proj-row:hover .ptag{border-color:rgba(212,232,50,.4);color:var(--y);}
+.pr-arrow{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;color:var(--dim);
+  padding:0 var(--pad);
+  transition:transform .18s,color .18s;
+  white-space:nowrap;
+}
+
+/* FEATURED — big hero project (Teezo) */
+.proj-hero-full{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-bottom:2px solid rgba(242,239,232,.1);
+  min-height:52vh;cursor:pointer;
+  transition:background .2s;
+}
+.proj-hero-full:hover{background:rgba(242,239,232,.03);}
+.proj-hero-full:hover .phf-name{color:var(--y);}
+.proj-hero-full:hover .pr-arrow{transform:translateX(6px);color:var(--y);}
+.phf-left{
+  padding:clamp(28px,4vw,56px) var(--pad);
+  border-right:1px solid rgba(242,239,232,.08);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.phf-index{
+  font-size:10px;letter-spacing:.18em;color:var(--y);
+  font-weight:700;text-transform:uppercase;
+}
+.phf-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(48px,9vw,120px);
+  line-height:.88;letter-spacing:-.01em;
+  color:var(--w);transition:color .2s;
+}
+.phf-sub{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);font-weight:700;margin-top:12px;
+}
+.phf-right{
+  padding:clamp(28px,4vw,56px) var(--pad);
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.phf-desc{
+  font-size:13px;line-height:1.7;
+  color:var(--dim);margin-bottom:28px;max-width:300px;
+}
+@media(max-width:640px){
+  .proj-hero-full{grid-template-columns:1fr;}
+  .phf-left{border-right:none;border-bottom:1px solid rgba(242,239,232,.08);}
+}
+
+/* 3-col mini grid */
+.proj-mini-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-bottom:2px solid rgba(242,239,232,.1);
+}
+.proj-mini{
+  padding:clamp(18px,3vw,36px) var(--pad);
+  border-right:1px solid rgba(242,239,232,.08);
+  cursor:pointer;transition:background .18s;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:180px;
+}
+.proj-mini:last-child{border-right:none;}
+.proj-mini:hover{background:rgba(242,239,232,.04);}
+.proj-mini:hover .pm-name{color:var(--y);}
+.pm-num{font-size:9px;letter-spacing:.14em;color:var(--dim);font-weight:700;}
+.pm-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(22px,3vw,40px);
+  letter-spacing:.04em;line-height:.95;
+  color:var(--w);transition:color .18s;margin-top:auto;
+}
+.pm-type{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:700;margin-top:8px;}
+@media(max-width:720px){.proj-mini-grid{grid-template-columns:1fr 1fr;}.proj-mini:nth-child(2){border-right:none;}}
+@media(max-width:440px){.proj-mini-grid{grid-template-columns:1fr;}.proj-mini{border-right:none;}}
+
+/* NDA strip */
+.nda-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px var(--pad);
+  background:rgba(212,232,50,.04);
+  border-bottom:2px solid rgba(242,239,232,.1);
+}
+.nda-strip span{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+.nda-link{
+  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--y);text-decoration:none;font-weight:700;
+  transition:opacity .15s;display:flex;align-items:center;gap:6px;
+}
+.nda-link:hover{opacity:.7;}
+
+/* ── ROSTER ──────────────────────────────────────── */
+#roster{}
+.roster-wrap{}
+.ri{
+  display:grid;grid-template-columns:40px 1fr auto 24px;
+  align-items:center;gap:0;
+  border-bottom:1px solid rgba(242,239,232,.07);
+  cursor:pointer;transition:background .15s;
+  min-height:54px;
+}
+.ri:hover{background:rgba(242,239,232,.04);}
+.ri:hover .ri-name{color:var(--y);}
+.ri:hover .ri-arr{opacity:1;color:var(--y);}
+.ri-idx{
+  font-size:9px;letter-spacing:.12em;color:var(--dim);font-weight:700;
+  padding:0 0 0 var(--pad);
+}
+.ri-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(20px,3.2vw,32px);
+  letter-spacing:.06em;color:var(--w);
+  transition:color .15s;padding:0 clamp(12px,2vw,24px);
+}
+.ri-scope{
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);font-weight:700;padding-right:16px;text-align:right;
+}
+.ri-arr{
+  font-size:16px;color:var(--dim);
+  opacity:0;transition:opacity .15s,color .15s;
+  padding-right:var(--pad);
+}
+@media(max-width:500px){
+  .ri{grid-template-columns:36px 1fr 20px;}
+  .ri-scope{display:none;}
+}
+
+/* ── EVENTS ──────────────────────────────────────── */
+#events{}
+.ev-list{}
+.ev-item{
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:24px;
+  padding:clamp(18px,2.5vw,32px) var(--pad);
+  border-bottom:1px solid rgba(242,239,232,.08);
+  cursor:pointer;transition:background .18s;
+}
+.ev-item:hover{background:rgba(242,239,232,.04);}
+.ev-item:hover .ev-name{color:var(--y);}
+.ev-left{display:flex;flex-direction:column;gap:6px;}
+.ev-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(28px,5vw,60px);
+  letter-spacing:.04em;line-height:.95;
+  color:var(--w);transition:color .18s;
+}
+.ev-meta{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+.ev-badge{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  border:1.5px solid rgba(242,239,232,.15);
+  padding:8px 14px;color:var(--dim);font-weight:700;white-space:nowrap;
+  transition:border-color .15s,color .15s;
+}
+.ev-item:hover .ev-badge{border-color:var(--y);color:var(--y);}
+.ev-cta{
+  padding:clamp(18px,2.5vw,28px) var(--pad);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+  background:rgba(242,239,232,.02);
+}
+.ev-cta span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+@media(max-width:500px){.ev-item{grid-template-columns:1fr;}.ev-badge{display:none;}}
+
+/* ── CONTACT ──────────────────────────────────────── */
+#contact{}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:60vh;
+}
+.contact-left{
+  padding:clamp(28px,4vw,56px) var(--pad);
+  border-right:1px solid rgba(242,239,232,.1);
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:rgba(212,232,50,.03);
+}
+.contact-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(52px,10vw,130px);
+  line-height:.88;letter-spacing:-.01em;
+  color:var(--w);
+}
+.contact-big .hl{color:var(--y);}
+.c-links{display:flex;flex-direction:column;gap:14px;margin-top:32px;}
+.c-link{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);text-decoration:none;font-weight:700;
+  display:flex;align-items:center;gap:10px;
+  transition:color .15s;width:fit-content;
+}
+.c-link::before{content:'→';color:var(--y);transition:transform .15s;}
+.c-link:hover{color:var(--w);}
+.c-link:hover::before{transform:translateX(5px);}
+.contact-right{
+  padding:clamp(28px,4vw,56px) var(--pad);
+}
+.form-label{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);font-weight:700;margin-bottom:32px;display:block;
+}
+.iq-f{
+  display:block;width:100%;background:transparent;
+  border:none;border-bottom:1px solid rgba(242,239,232,.12);
+  padding:13px 0;margin-bottom:6px;
+  color:var(--w);font-family:'DM Mono',monospace;
+  font-size:11px;font-weight:300;letter-spacing:.04em;outline:none;
+  transition:border-color .18s;
+}
+.iq-f:focus{border-bottom-color:var(--y);}
+.iq-f::placeholder{color:rgba(242,239,232,.2);font-size:10px;letter-spacing:.08em;}
+.iq-gap{height:16px;}
+.iq-sub{
+  background:var(--y);color:var(--k);
+  border:none;padding:14px 32px;margin-top:20px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:17px;letter-spacing:.16em;
+  cursor:pointer;transition:background .15s;display:inline-block;
+}
+.iq-sub:hover{background:#c8dc20;}
+@media(max-width:680px){
+  .contact-grid{grid-template-columns:1fr;}
+  .contact-left{border-right:none;border-bottom:1px solid rgba(242,239,232,.1);}
+}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{
+  display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  padding:16px var(--pad);
+  border-top:2px solid var(--y);
+  background:var(--k);
+}
+footer span{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:700;}
+
+/* ── REVEAL ───────────────────────────────────────── */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+.rv.d1{transition-delay:.07s;}
+.rv.d2{transition-delay:.14s;}
+.rv.d3{transition-delay:.21s;}
+
+/* ── DIVIDER ──────────────────────────────────────── */
+.div-y{height:2px;background:var(--y);opacity:.15;}
+
+/* ── ROSTER ACCORDION ─────────────────────────────── */
+.roster-preview{}
+.roster-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px var(--pad);
+  border-top:1px solid rgba(242,239,232,.08);
+  cursor:pointer;background:rgba(212,232,50,.04);
+  transition:background .18s;
+  user-select:none;
+}
+.roster-toggle:hover{background:rgba(212,232,50,.09);}
+.rt-left{display:flex;align-items:center;gap:16px;}
+.rt-label{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:18px;letter-spacing:.1em;color:var(--y);
+}
+.rt-count{
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);font-weight:700;
+}
+.rt-icon{
+  font-size:20px;color:var(--y);font-weight:700;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+  line-height:1;
+}
+.roster-toggle.open .rt-icon{transform:rotate(45deg);}
+
+.roster-hidden{
+  max-height:0;overflow:hidden;
+  transition:max-height .45s cubic-bezier(.16,1,.3,1);
+}
+.roster-hidden.open{max-height:1400px;}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-dot"></span>
+    C / D
+  </a>
+  <ul class="nav-links">
+    <li><a href="#featured">Work</a></li>
+    <li><a href="#roster">Roster</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
+</nav>
+<div class="mob-nav" id="mobnav">
+  <a href="#featured" class="mlink">Work</a>
+  <a href="#roster"   class="mlink">Roster</a>
+  <a href="#events"   class="mlink">Events</a>
+  <a href="#contact"  class="mlink">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">ART</div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Making<br>
+      <span class="hl">Artists</span><br>
+      Iconic.
+    </h1>
+    <div class="hero-right">
+      <p>
+        Visual Identity<br>
+        Brand Direction<br>
+        Art Direction<br>
+        Merch + Events<br>
+        2020–Present
+      </p>
+      <div class="hero-cta">
+        <a href="#featured" class="btn-y">View Work</a>
+        <a href="#contact"  class="btn-o">Get In Touch</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-ticker">
+    <div class="ticker-track">
+      <span>Visual Identity</span><span class="t-sep">✦</span>
+      <span>Album Art</span><span class="t-sep">✦</span>
+      <span>Merch Design</span><span class="t-sep">✦</span>
+      <span>Art Direction</span><span class="t-sep">✦</span>
+      <span>Brand Direction</span><span class="t-sep">✦</span>
+      <span>Event Production</span><span class="t-sep">✦</span>
+      <span>Concept Dev</span><span class="t-sep">✦</span>
+      <span>Style Diversity</span><span class="t-sep">✦</span>
+      <span>Visual Identity</span><span class="t-sep">✦</span>
+      <span>Album Art</span><span class="t-sep">✦</span>
+      <span>Merch Design</span><span class="t-sep">✦</span>
+      <span>Art Direction</span><span class="t-sep">✦</span>
+      <span>Brand Direction</span><span class="t-sep">✦</span>
+      <span>Event Production</span><span class="t-sep">✦</span>
+      <span>Concept Dev</span><span class="t-sep">✦</span>
+      <span>Style Diversity</span><span class="t-sep">✦</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 FEATURED -->
+<section id="featured">
+  <div class="sec-hd rv">
+    <span class="sh-num">01 —</span>
+    <span class="sh-title">Featured Work</span>
+    <span class="sh-right">9 Projects</span>
+  </div>
+
+  <!-- Teezo — big hero row -->
+  <div class="proj-hero-full rv">
+    <div class="phf-left">
+      <span class="phf-index">001 / Featured</span>
+      <div>
+        <div class="phf-name">Teezo<br>Touchdown</div>
+        <div class="phf-sub">Visual Identity · Brand · Merch</div>
+      </div>
+    </div>
+    <div class="phf-right">
+      <p class="phf-desc">
+        Full creative direction — visual identity system,
+        merchandise collection, campaign rollout.
+        Ongoing art direction relationship.
+      </p>
+      <div class="pr-tags">
+        <span class="ptag">Identity</span>
+        <span class="ptag">Merch</span>
+        <span class="ptag">Campaign</span>
+        <span class="ptag">Art Direction</span>
+      </div>
+      <div class="pr-arrow" style="margin-top:28px;display:inline-block;">View Case Study →</div>
+    </div>
+  </div>
+
+  <!-- Kevin Abstract -->
+  <div class="proj-row rv">
+    <span class="pr-num">002</span>
+    <div class="pr-main">
+      <div class="pr-name">Kevin Abstract + Dominic Fike</div>
+      <div class="pr-sub">Conceptual Direction · BLUSH</div>
+      <div class="pr-tags">
+        <span class="ptag">Concept</span><span class="ptag">Campaign</span><span class="ptag">Visual Language</span>
+      </div>
+    </div>
+    <div class="pr-arrow">→</div>
+  </div>
+
+  <!-- Holirave -->
+  <div class="proj-row rv d1">
+    <span class="pr-num">003</span>
+    <div class="pr-main">
+      <div class="pr-name">Nick Holiday + Chase Hall</div>
+      <div class="pr-sub">Album Art · Holirave</div>
+      <div class="pr-tags">
+        <span class="ptag">Album Art</span><span class="ptag">Print</span><span class="ptag">Visual System</span>
+      </div>
+    </div>
+    <div class="pr-arrow">→</div>
+  </div>
+
+  <!-- Forest -->
+  <div class="proj-row rv d2">
+    <span class="pr-num">004</span>
+    <div class="pr-main">
+      <div class="pr-name">Forest Ripperton</div>
+      <div class="pr-sub">Brand Identity · IHP</div>
+      <div class="pr-tags">
+        <span class="ptag">Brand</span><span class="ptag">Identity</span>
+      </div>
+    </div>
+    <div class="pr-arrow">→</div>
+  </div>
+
+  <!-- mini grid -->
+  <div class="proj-mini-grid rv">
+    <div class="proj-mini">
+      <span class="pm-num">005</span>
+      <div>
+        <div class="pm-name">Humaine Magazine</div>
+        <div class="pm-type">Editorial Direction</div>
+      </div>
+    </div>
+    <div class="proj-mini">
+      <span class="pm-num">006</span>
+      <div>
+        <div class="pm-name">Galen Cason</div>
+        <div class="pm-type">Visual Identity</div>
+      </div>
+    </div>
+    <div class="proj-mini">
+      <span class="pm-num">007</span>
+      <div>
+        <div class="pm-name">Bad Balmains + R!0</div>
+        <div class="pm-type">Brand · Merch</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nda-strip rv">
+    <span>Additional work available under NDA</span>
+    <a href="#contact" class="nda-link">Request Access →</a>
+  </div>
+</section>
+
+<div class="div-y"></div>
+
+<!-- 02 ROSTER -->
+<section id="roster">
+  <div class="sec-hd rv">
+    <span class="sh-num">02 —</span>
+    <span class="sh-title">Roster</span>
+    <span class="sh-right">18 Artists</span>
+  </div>
+  <div class="roster-wrap">
+
+    <!-- Always visible: top 4 -->
+    <div class="ri rv">   <span class="ri-idx">01</span><span class="ri-name">Ezcodylee</span>              <span class="ri-scope">Album Art · Visuals</span><span class="ri-arr">→</span></div>
+    <div class="ri rv d1"><span class="ri-idx">02</span><span class="ri-name">Ihategum</span>               <span class="ri-scope">Brand Identity</span>     <span class="ri-arr">→</span></div>
+    <div class="ri rv d2"><span class="ri-idx">03</span><span class="ri-name">Three Two</span>              <span class="ri-scope">Visual Direction</span>   <span class="ri-arr">→</span></div>
+    <div class="ri rv">   <span class="ri-idx">04</span><span class="ri-name">Leah GTE</span>               <span class="ri-scope">Art Direction</span>      <span class="ri-arr">→</span></div>
+
+    <!-- Toggle button -->
+    <div class="roster-toggle rv" id="rosterToggle">
+      <div class="rt-left">
+        <span class="rt-label">+ 14 More Artists</span>
+        <span class="rt-count">Click to expand</span>
+      </div>
+      <span class="rt-icon">+</span>
+    </div>
+
+    <!-- Hidden rows -->
+    <div class="roster-hidden" id="rosterHidden">
+      <div class="ri"><span class="ri-idx">05</span><span class="ri-name">N4T</span>                    <span class="ri-scope">Merch · Design</span>     <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">06</span><span class="ri-name">Bigbabygucci</span>           <span class="ri-scope">Visual Identity</span>    <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">07</span><span class="ri-name">Midrift</span>                <span class="ri-scope">Brand · Print</span>      <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">08</span><span class="ri-name">Nate DAE</span>               <span class="ri-scope">Art Direction</span>      <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">09</span><span class="ri-name">Slyy Stone</span>             <span class="ri-scope">Visual System</span>      <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">10</span><span class="ri-name">Naheim / Yah Soul</span>      <span class="ri-scope">Brand · Concept</span>    <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">11</span><span class="ri-name">Xaviersobased</span>          <span class="ri-scope">Art Direction</span>      <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">12</span><span class="ri-name">Zicmade</span>                <span class="ri-scope">Merch · Visual</span>     <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">13</span><span class="ri-name">Malo / Emotional Therapy</span><span class="ri-scope">Campaign · Art</span> <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">14</span><span class="ri-name">Kemp / Dying Wishes</span>    <span class="ri-scope">Identity · Print</span>   <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">15</span><span class="ri-name">Luh Bam · 1300saint</span>   <span class="ri-scope">Visual Direction</span>   <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">16</span><span class="ri-name">Lil Sccrt · Pretty V</span>  <span class="ri-scope">Art Direction</span>      <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">17</span><span class="ri-name">Lucy Bedroque</span>          <span class="ri-scope">Visual Identity</span>    <span class="ri-arr">→</span></div>
+      <div class="ri"><span class="ri-idx">18</span><span class="ri-name">Bad Balmains + R!0</span>     <span class="ri-scope">Brand · Merch</span>      <span class="ri-arr">→</span></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="div-y"></div>
+
+<!-- 03 EVENTS -->
+<section id="events">
+  <div class="sec-hd rv">
+    <span class="sh-num">03 —</span>
+    <span class="sh-title">Events &amp; Production</span>
+    <span class="sh-right">Open for Booking</span>
+  </div>
+  <div class="ev-list">
+    <div class="ev-item rv">
+      <div class="ev-left">
+        <div class="ev-name">Event Name Here</div>
+        <div class="ev-meta">Venue — City, State · 500 cap · Lineup curation + visual production</div>
+      </div>
+      <span class="ev-badge">Hosted · Sold Out</span>
+    </div>
+    <div class="ev-item rv d1">
+      <div class="ev-left">
+        <div class="ev-name">Event Name Here</div>
+        <div class="ev-meta">Venue — City, State · Artist booking · Identity + flyer + merch</div>
+      </div>
+      <span class="ev-badge">Co-Produced</span>
+    </div>
+    <div class="ev-item rv d2">
+      <div class="ev-left">
+        <div class="ev-name">Event Name Here</div>
+        <div class="ev-meta">Campaign · Flyer · Rollout assets · Full pre-show visual package</div>
+      </div>
+      <span class="ev-badge">Visual Direction</span>
+    </div>
+  </div>
+  <div class="ev-cta rv">
+    <span>Available for event visual direction + production partnerships</span>
+    <a href="#contact" class="btn-y" style="font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.12em;padding:10px 22px;text-decoration:none;display:inline-block;background:var(--y);color:var(--k);transition:background .15s;">Book Now →</a>
+  </div>
+</section>
+
+<div class="div-y"></div>
+
+<!-- 04 CONTACT -->
+<section id="contact">
+  <div class="sec-hd rv">
+    <span class="sh-num">04 —</span>
+    <span class="sh-title">Contact</span>
+    <span class="sh-right">Select Projects Only</span>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-left rv">
+      <div class="contact-big">
+        Let's<br>Build<br>
+        <span class="hl">Something.</span>
+      </div>
+      <div class="c-links">
+        <a href="mailto:hello@youremail.com" class="c-link">Email Direct</a>
+        <a href="#" class="c-link">Instagram</a>
+        <a href="#" class="c-link">Request NDA Access</a>
+      </div>
+    </div>
+    <div class="contact-right rv d1">
+      <span class="form-label">Send an inquiry</span>
+      <input class="iq-f" type="text"  placeholder="Name / Project">
+      <input class="iq-f" type="text"  placeholder="What you need">
+      <input class="iq-f" type="text"  placeholder="Budget range">
+      <div class="iq-gap"></div>
+      <input class="iq-f" type="email" placeholder="Email address">
+      <button class="iq-sub">Send It →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>Creative Direction</span>
+  <span>2020 – Present</span>
+  <span>All Rights Reserved</span>
+</footer>
+
+<script>
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+document.querySelectorAll('a,button,.proj-hero-full,.proj-row,.proj-mini,.ri,.ev-item,.roster-toggle').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('sq'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('sq'));
+});
+const ham=document.getElementById('ham'),mob=document.getElementById('mobnav');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open');});
+document.querySelectorAll('.mlink').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open');}));
+
+/* roster accordion */
+const rToggle=document.getElementById('rosterToggle');
+const rHidden=document.getElementById('rosterHidden');
+rToggle.addEventListener('click',()=>{
+  const isOpen=rHidden.classList.contains('open');
+  rHidden.classList.toggle('open');
+  rToggle.classList.toggle('open');
+  rToggle.querySelector('.rt-label').textContent=isOpen?'+ 14 More Artists':'— 14 Artists';
+  rToggle.querySelector('.rt-count').textContent=isOpen?'Click to expand':'Click to collapse';
+});
+
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:0.06});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
